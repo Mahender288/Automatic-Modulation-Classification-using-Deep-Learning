@@ -1,4 +1,5 @@
 ## Code for real time over the air testing using USRP B210
+
 radioPlatform = "USRP B2xx";
 if helperIsUSRPInstalled()
  % Find all connected USRP radios
