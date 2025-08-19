@@ -9,7 +9,7 @@ if helperIsUSRPInstalled()
  rxRadio = rxRadio(idx);
  % Check if we have at least 2 devices for TX and RX
  if length(rxRadio) >= 2
- % Use first for TX, second for RX (you can swap if needed)
+ % Use first for TX, second for RX 
  txRadio = rxRadio(1);
  rxRadio = rxRadio(2);
  % Run OTA modulation classification test
