@@ -1,5 +1,6 @@
 # Automatic-Modulation-Classification-using-Deep-Learning
-This project is made by me during my Dissertation, where i designed an CNN model which automatically classify modulated signal using Convolutional Neural Networks and USRP Hardware
+This project is made by me during my Dissertation, where i designed an CNN model which automatically classify modulated signal using Convolutional Neural Networks and USRP Hardware. 
+
 This project implements an **SDR-based Automatic Modulation Classification (AMC)** system using **USRP B210** hardware and **MATLAB Deep Learning Toolbox**.  
 The system classifies modulated signals (ASK, BPSK, QPSK, etc.) using a **CNN model** trained on both synthetic and over-the-air datasets.
 
