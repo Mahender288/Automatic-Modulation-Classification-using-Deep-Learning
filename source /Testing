@@ -18,3 +18,6 @@ if helperIsUSRPInstalled()
  disp('At least two USRP B2xx radios are required. Skipping over-the-air
 test.');
  end
+else
+ disp('USRP support package not installed. Skipping over-the-air test.');
+end
