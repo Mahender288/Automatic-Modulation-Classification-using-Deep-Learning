@@ -60,8 +60,48 @@ Trained model validated both in simulation and in real-time SDR environment with
 - Scalability: The framework can be extended to classify more complex modulations or integrated into IoT/RFID communication systems.
 
 - Real-Time Capability: By leveraging SDR hardware and CNN inference, the system demonstrates practical deployment feasibility in wireless communication and RFID environments.
+
+ ## Retraining for ASK Modulation
+ **Motivation**
+
+Most open-source modulation classification datasets and pretrained models focus on PSK, QAM, and FSK families, while ASK (Amplitude Shift Keying) is often ignored. 
+Since ASK is the dominant modulation in RFID systems, we extended the modulation classifier to include ASK for RFID-specific applications.
+
+ **Implementation**
+
+- Data Generation
+
+Created ASK datasets synthetically in MATLAB, adding channel impairments (AWGN, fading, frequency/phase offsets).
+
+Captured over-the-air ASK signals using a dual-USRP B210 setup for real-world validation.
+
+- Model Training (From Scratch)
+
+Built a CNN architecture from scratch, trained with randomly initialized weights (no transfer learning).
+
+Combined ASK + other modulation types (BPSK, QPSK, QAM, etc.) to form a new dataset tailored for RFID environments.
+
+Training optimized using mini-batch gradient descent and early stopping to avoid overfitting.
+
+- Testing & Validation
+
+Evaluated on both synthetic datasets and real-time USRP experiments.
+
+Achieved high classification accuracy for ASK detection, proving model robustness in SDR-based RFID use cases.
+
+ **Impact of This Work**
+
+Custom Dataset Contribution – First inclusion of ASK into the CNN-based AMC framework for RFID-like environments.
+
+From-Scratch Training – Fully retrained model, independent of existing pretrained networks.
+
+RFID Relevance – Bridges deep learning-based AMC with RFID communication systems, making the solution practical.
+
+Future Scalability – Framework can be extended to other IoT and RFID-specific modulation schemes.
   
-  ## 📂 Repository Structure
+  ##  Repository Structure
 - `source/` : MATLAB scripts for signal generation, training, testing
+- `ASK/` : ASK-specific dataset generation & detection code
 - `hardware_setup/` : Block diagrams & antenna design
 - `results/` : Accuracy plots, confusion matrix, test results
+  
