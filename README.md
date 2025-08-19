@@ -53,10 +53,10 @@ Trained model validated both in simulation and in real-time SDR environment with
 
 **Impact of AI/ML in This Project**
 
--Automation: Traditional AMC requires handcrafted features (cyclostationary analysis, likelihood tests, etc.), but deep learning automatically learns optimal features from raw IQ data.
+- Automation: Traditional AMC requires handcrafted features (cyclostationary analysis, likelihood tests, etc.), but deep learning automatically learns optimal features from raw IQ data.
 
--Accuracy: CNN-based AMC achieves higher classification accuracy under noisy and fading conditions compared to classical methods.
+- Accuracy: CNN-based AMC achieves higher classification accuracy under noisy and fading conditions compared to classical methods.
 
--Scalability: The framework can be extended to classify more complex modulations or integrated into IoT/RFID communication systems.
+- Scalability: The framework can be extended to classify more complex modulations or integrated into IoT/RFID communication systems.
 
--Real-Time Capability: By leveraging SDR hardware and CNN inference, the system demonstrates practical deployment feasibility in wireless communication and RFID environments.
+- Real-Time Capability: By leveraging SDR hardware and CNN inference, the system demonstrates practical deployment feasibility in wireless communication and RFID environments.
