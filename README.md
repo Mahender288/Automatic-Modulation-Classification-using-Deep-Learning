@@ -62,6 +62,6 @@ Trained model validated both in simulation and in real-time SDR environment with
 - Real-Time Capability: By leveraging SDR hardware and CNN inference, the system demonstrates practical deployment feasibility in wireless communication and RFID environments.
   
   ## 📂 Repository Structure
-- `src/` : MATLAB scripts for signal generation, training, testing
+- `source/` : MATLAB scripts for signal generation, training, testing
 - `hardware_setup/` : Block diagrams & antenna design
 - `results/` : Accuracy plots, confusion matrix, test results
