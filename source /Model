@@ -1,1 +1,5 @@
-ss
+For the model training we used the pretrained MATLAB model and we train that according to
+our need for specific datasets the model training, data generation, pre-processing has been done
+using the MATLAB inbuilt codes the network training and validation has been also done using
+the inbuilt MATLAB codes giving the reference of that below:
+https://www.mathworks.com/help/comm/ug/modulation-classification-with-deep-learning.html
