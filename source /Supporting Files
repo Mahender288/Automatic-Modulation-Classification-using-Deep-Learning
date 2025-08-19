@@ -1,1 +1,103 @@
-ss
+## HelperModClassSDR Supporting File
+
+function testAccuracy = HelperModClassSDRTest1(txRadioInfo, rxRadioInfo)
+%helperModClassSDRTest Test CNN performance with over-the-air signals using USRP
+% This version uses USRP B210 for both Tx and Rx, and replaces
+% transmitRepeat with a continuous background transmission loop.
+modulationTypesToTest = categorical(["BPSK"]);
+load trainedModulationClassificationNetwork trainedNet modulationTypes
+numFramesPerModType = 500;
+sps = 8; % Samples per symbol
+spf = 1024; % Samples per frame
+fs = 200e3; % Sample rate
+% Define the transmitter USRP B210
+txRadio = comm.SDRuTransmitter(...
+ 'Platform', 'B210', ...
+ 'SerialNum', '33F8789', ...
+ 'CenterFrequency', 902e6, ...
+ 'MasterClockRate', 5e6, ...
+ 'InterpolationFactor', 1, ...
+ 'Gain', 50, ...
+ 'ChannelMapping', 1);
+% Define the receiver USRP B210
+rxRadio = comm.SDRuReceiver(...
+ 'Platform', 'B210', ...
+ 'SerialNum', '32BBA03', ...
+ 'CenterFrequency', 902e6, ...
+ 'MasterClockRate', 5e6, ...
+ 'DecimationFactor', 1, ...
+ 'Gain', 50, ...
+ 'ChannelMapping', 1);
+ rxRadio.SamplesPerFrame = spf;
+ rxRadio.OutputDataType = 'single';
+% Display Tx and Rx radios
+txRadio %#ok<NOPRT>
+rxRadio %#ok<NOPRT>
+rng(1235)
+tic
+numModulationTypes = length(modulationTypesToTest);
+txModType = repmat(modulationTypesToTest(1),
+numModulationTypes*numFramesPerModType, 1);
+estimatedModType = repmat(modulationTypesToTest(1),
+numModulationTypes*numFramesPerModType, 1);
+frameCnt = 1;
+for modType = 1:numModulationTypes
+ elapsedTime = seconds(toc);
+ elapsedTime.Format = 'hh:mm:ss';
+ fprintf('%s - Testing %s frames\n', elapsedTime,
+modulationTypesToTest(modType))
+ dataSrc = helperModClassGetSource(modulationTypesToTest(modType), sps, 2*spf,
+fs);
+ modulator = helperModClassGetModulator(modulationTypesToTest(modType), sps,
+fs);
+ disp('Starting transmitter')
+ x = dataSrc();
+ y = modulator(x);
+ % Remove filter transients
+ y = y(4*sps+1:end, 1);
+ maxVal = max(max(abs(real(y))), max(abs(imag(y))));
+ y = y * 0.8 / maxVal;
+ % Start background transmission
+ stopFlag = StopFlag();
+ txJob = parfeval(@continuousTxLoop, 0, txRadio, y, stopFlag);
+ disp('Adjusting receiver gain')
+ rxRadio.Gain = 30;
+gainAdjusted = false;
+ while ~gainAdjusted
+ for p = 1:20
+ rx = rxRadio();
+ end
+ maxAmplitude = max([abs(real(rx)); abs(imag(rx))]);
+ if (maxAmplitude < 0.8)
+ gainAdjusted = true;
+ else
+ rxRadio.Gain = rxRadio.Gain - 3;
+ end
+ end
+ disp('Starting receiver and test')
+ for p = 1:numFramesPerModType
+ rx = rxRadio();
+ framePower = mean(abs(rx).^2);
+ rx = rx / sqrt(framePower);
+ txModType(frameCnt) = modulationTypesToTest(modType);
+ scores = predict(trainedNet, rx);
+ estimatedModType(frameCnt) = scores2label(scores, modulationTypes, 2);
+ frameCnt = frameCnt + 1;
+ pause(0.35)
+ end
+
+## Continuosloop.m File
+
+function continuousTxLoop(txRadio, y, stopFlag)
+ while ~stopFlag.Value
+ txRadio(y);
+ end
+end
+
+## stopflag.m file
+
+classdef StopFlag < handle
+ properties
+ Value = false;
+ end
+end
