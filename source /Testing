@@ -1,23 +1,26 @@
-## Code for real time over the air testing using USRP B210
+%% Code for real-time over-the-air testing using USRP B210
 
 radioPlatform = "USRP B2xx";
+
 if helperIsUSRPInstalled()
- % Find all connected USRP radios
- rxRadio = findsdru();
- % Filter only B200/B210 radios
- idx = contains({rxRadio.Platform}, {'B200','B210'});
- rxRadio = rxRadio(idx);
- % Check if we have at least 2 devices for TX and RX
- if length(rxRadio) >= 2
- % Use first for TX, second for RX 
- txRadio = rxRadio(1);
- rxRadio = rxRadio(2);
- % Run OTA modulation classification test
- helperModClassSDRTest1(rxRadio);
- else
- disp('At least two USRP B2xx radios are required. Skipping over-the-air
-test.');
- end
+    % Find all connected USRP radios
+    rxRadio = findsdru();
+
+    % Filter only B200/B210 radios
+    idx = contains({rxRadio.Platform}, {'B200','B210'});
+    rxRadio = rxRadio(idx);
+
+    % Check if we have at least 2 devices for TX and RX
+    if length(rxRadio) >= 2
+        % Use first for TX, second for RX 
+        txRadio = rxRadio(1);
+        rxRadio = rxRadio(2);
+
+        % Run OTA modulation classification test
+        helperModClassSDRTest1(rxRadio);
+    else
+        disp('At least two USRP B2xx radios are required. Skipping over-the-air test.');
+    end
 else
- disp('USRP support package not installed. Skipping over-the-air test.');
+    disp('USRP support package not installed. Skipping over-the-air test.');
 end
