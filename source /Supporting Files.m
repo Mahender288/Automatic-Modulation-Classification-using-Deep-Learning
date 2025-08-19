@@ -98,14 +98,14 @@ function testAccuracy = HelperModClassSDRTest1(txRadioInfo, rxRadioInfo)
         end
     end
 end
-## continuosTxLoop.m file
+%% continuosTxLoop.m file
 function continuousTxLoop(txRadio, y, stopFlag)
     while ~stopFlag.Value
         txRadio(y);
     end
 end
 
-## StopFlog.m file
+%% StopFlog.m file
 classdef StopFlag < handle
     properties
         Value = false;
