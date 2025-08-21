@@ -102,6 +102,5 @@ Future Scalability – Framework can be extended to other IoT and RFID-specific 
   ##  Repository Structure
 - `source/` : MATLAB scripts for signal generation, training, testing
 - `ASK/` : ASK-specific dataset generation & detection code
-- `hardware_setup/` : Block diagrams & antenna design
-- `results/` : Accuracy plots, confusion matrix, test results
+
   
